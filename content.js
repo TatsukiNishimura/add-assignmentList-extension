@@ -10,7 +10,7 @@ const tomorrow = new Date(origin_date.getFullYear(), origin_date.getMonth(), ori
 const dayAfterTomorrow = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate() + 2, 23, 59, 00)
 
 // date_compateは"lessOrEqual"か"greaterOrEqual"
-const params = { date: origin_date.toJSON(), date_compare: "lessOrEqual", includeCount: true, limit: 20, offset: 0 }
+const params = { date: origin_date.toJSON(), date_compare: "greaterOrEqual", includeCount: true, limit: 20, offset: 0 }
 const query = new URLSearchParams(params)
 window.addEventListener("load", main, false);
 
