@@ -1,0 +1,14 @@
+{
+  "name": "CLEからカレンダーを取得する",
+  "manifest_version": 3,
+  "version": "0.1",
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["https://www.cle.osaka-u.ac.jp/ultra/institution-page"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ]
+}
