@@ -8,6 +8,20 @@ Google Chrome version 106.0.5249.91
 
 （動作確認済み） Ubuntu 20.04 LTS
 
+PC でのみ動作します
+
+# 使い方
+
+- https://reviews.f-tools.net/Add-On/Jisaku-Tuika.html
+  を参考にインストール
+
+- トップページ
+  https://www.cle.osaka-u.ac.jp/ultra/institution-page
+  にアクセス
+
+- 課題一覧が表示される
+  - 表示されなければリロードしてください
+
 # 使用言語
 
 JavaScript
