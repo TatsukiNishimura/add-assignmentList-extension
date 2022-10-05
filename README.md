@@ -19,7 +19,7 @@ PC でのみ動作します
   https://www.cle.osaka-u.ac.jp/ultra/institution-page
   にアクセス
 
-- 課題一覧が表示される
+- 課題一覧と授業一覧が表示される
   - 表示されなければリロードしてください
 
 # 使用言語

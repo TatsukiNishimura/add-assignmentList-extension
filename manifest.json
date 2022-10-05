@@ -5,10 +5,16 @@
   "permissions": ["activeTab", "scripting"],
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "js": ["loader.js"],
       "matches": ["https://www.cle.osaka-u.ac.jp/ultra/institution-page"],
       "run_at": "document_end",
       "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["constants.js", "util.js", "content.js"],
+      "matches": ["<all_urls>"]
     }
   ]
 }

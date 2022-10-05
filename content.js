@@ -1,64 +1,125 @@
-const url = "https://www.cle.osaka-u.ac.jp/learn/api/v1/calendars/dueDateCalendarItems"
-const contentLink_base = "https://www.cle.osaka-u.ac.jp/ultra/courses/"
-// 課題リンク用　合ってるかわからない
-const magic_url = "/cl/outline?legacyUrl=~2Fwebapps~2Fcalendar~2Flaunch~2Fattempt~2F_"
-// API側での時刻はUTC つまり日本より9時間遅い
-const hour_diffenrence = 9
-const origin_date = new Date()
-const today = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate(), 23, 59, 00)
-const tomorrow = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate() + 1, 23, 59, 00)
-const dayAfterTomorrow = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate() + 2, 23, 59, 00)
+import {
+    assignmentDeadline, calendarDataLimit, classListApiUrl,
+    dateCompareText, formatDateForShow, getAssignmentUrl,
+    getClassUrl, jsInitCheckMilliSecond, semester, url,
+    yearOfClassId
+} from "./constants.js";
 
-// date_compateは"lessOrEqual"か"greaterOrEqual"
-const params = { date: origin_date.toJSON(), date_compare: "greaterOrEqual", includeCount: true, limit: 20, offset: 0 }
-const query = new URLSearchParams(params)
+
+
+const origin_date = new Date()
+const today = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate(), 23, 59)
+const tomorrow = new Date(origin_date.getFullYear(), origin_date.getMonth(), origin_date.getDate() + 1, 23, 59)
+
+
+
 window.addEventListener("load", main, false);
 
 function main(e) {
-    const jsInitCheckTimer = setInterval(jsLoaded, 1000);
+    const jsInitCheckTimer = setInterval(jsLoaded, jsInitCheckMilliSecond);
     async function jsLoaded() {
-        if (document.getElementsByClassName("module-section") != null) {
+        if (document.getElementsByClassName("module-container") != null) {
             // CLEの先頭ページの新着情報、サポートセンターなどの欄
             const body = document.getElementsByClassName("module-section")
-            const requestUrl = `${url}?` + query
-            const res = await fetch(requestUrl, { method: "GET", mode: "cors" })
-            const data = await res.json()
-            const results = data["results"]
-            // 一番上（新着情報）に要素を追加
-            addTable(results, body[0])
-            const title = document.createElement("h1")
-            title.textContent = "課題一覧" + `（取得: ${formatDateForShow(origin_date)}）`
-            body[0].prepend(title)
+            makeAssignmentList(body[0])
+            makeClassList(body[0])
             clearInterval(jsInitCheckTimer);
         }
     }
 }
 
-
-function formatDateForShow(dt) {
-    const y = dt.getFullYear();
-    const m = ('00' + (dt.getMonth() + 1)).slice(-2);
-    const d = ('00' + dt.getDate()).slice(-2);
-    const h = dt.getHours().toString().padStart(2, '0');
-    const M = dt.getMinutes().toString().padStart(2, '0');
-    return (y + '-' + m + '-' + d + " " + h + ':' + M);
+async function makeClassList(target) {
+    const res = await fetch(classListApiUrl, { method: "GET", mode: "cors" })
+    const data = await res.json()
+    const results = data["results"]
+    let classList = []
+    results.forEach(data => {
+        const name = data["name"]
+        // 2022-xxxxxxxxxx-Aか2022-xxxxxxxxx-Bなど、講義名の先頭の文字列を読み取る
+        const classId = name.substr(0, name.indexOf(':'))
+        const className = name.substr(name.indexOf(':') + 1)
+        // classidの先頭の年号を読み取る
+        const headerOfClassId = classId.substr(0, classId.indexOf('-'))
+        if (headerOfClassId) {
+            // 先頭の年号が2022かどうか
+            if (headerOfClassId == yearOfClassId) {
+                // classIdの末尾がAかBか
+                if (classId.slice(-1) == semester.LATE) {
+                    classList.push({ "name": className, "id": data["id"] })
+                }
+            }
+        }
+    })
+    console.log(classList)
+    getClassListTable(classList, target)
+    const title = document.createElement("h3")
+    title.textContent = "授業一覧"
+    target.prepend(title)
 }
+
+function getClassListTable(data, target) {
+    const div = document.createElement("div")
+    const table = document.createElement("table")
+    table.setAttribute("border", 2)
+    table.setAttribute("style", "table-layout: fixed;width: 80%;")
+    const header = document.createElement("tr")
+    const header_cell = document.createElement("th")
+    header_cell.appendChild(document.createTextNode("課題一覧"))
+    header.appendChild(header_cell)
+    table.appendChild(header)
+    data.forEach(elem => {
+        const row = document.createElement("tr")
+        const cell = document.createElement("td")
+        const link = document.createElement("a")
+        const classUrl = getClassUrl(elem["id"])
+        link.setAttribute("href", classUrl)
+        link.setAttribute("target", "_blank")
+        const cellText = document.createTextNode(elem["name"])
+        link.appendChild(cellText)
+        cell.appendChild(link)
+        row.appendChild(cell)
+        table.appendChild(row)
+    })
+    div.appendChild(table)
+    target.prepend(div)
+}
+
+
+async function makeAssignmentList(target) {
+    // date_compateは"lessOrEqual"か"greaterOrEqual"
+    const params = {
+        date: origin_date.toJSON(), date_compare: dateCompareText.GREATER_OR_EQUAL,
+        includeCount: true, limit: calendarDataLimit, offset: 0
+    }
+    const query = new URLSearchParams(params)
+    const requestUrl = `${url}?` + query
+    const res = await fetch(requestUrl, { method: "GET", mode: "cors" })
+    const data = await res.json()
+    const results = data["results"]
+
+    // 一番上（新着情報）に要素を追加
+    addTable(results, target)
+    const title = document.createElement("h3")
+    title.textContent = "課題一覧" + `（取得: ${formatDateForShow(origin_date)}）`
+    target.prepend(title)
+}
+
+
 
 function addTable(results, body) {
     const div = document.createElement("div")
     div.setAttribute("class", "module-section")
     let table = [];
+    const labels = ["今日", "明日", "将来", "期限切れ"]
     for (let i = 0; i < 4; i++) {
         table[i] = document.createElement("table")
         table[i].setAttribute("border", 2)
         table[i].setAttribute("style", "table-layout: fixed;width: 60%;")
+        table[i].appendChild(getDateLabel(labels[i]))
 
     } const header = getHeader()
-    table[0].appendChild(header)
-    table[0].appendChild(getDateLabel("今日"))
-    table[1].appendChild(getDateLabel("明日"))
-    table[2].appendChild(getDateLabel("将来"))
-    table[3].appendChild(getDateLabel("期限切れ"))
+    table[assignmentDeadline.TODAY].appendChild(header)
+
 
     results.forEach(element => {
         const endDate = new Date(element["endDate"])
@@ -69,7 +130,7 @@ function addTable(results, body) {
         const row = document.createElement("tr")
         const cell = document.createElement("td")
         const link = document.createElement("a")
-        const assignmentUrl = contentLink_base + courseId + magic_url + ItemSourceType + "-" + ItemSourceId
+        const assignmentUrl = getAssignmentUrl(courseId, ItemSourceType, ItemSourceId)
         link.setAttribute("href", assignmentUrl)
         link.setAttribute("target", "_blank")
         const cellText = document.createTextNode(element["title"])
@@ -81,16 +142,16 @@ function addTable(results, body) {
         row.appendChild(cell_deadline)
         if (endDate <= origin_date) {
             cell.setAttribute("style", "color:red;");
-            table[3].appendChild(row)
+            table[assignmentDeadline.EXPIRED].appendChild(row)
         }
         else if (endDate <= today) {
-            table[0].appendChild(row)
+            table[assignmentDeadline.TODAY].appendChild(row)
         }
         else if (endDate <= tomorrow) {
-            table[1].appendChild(row)
+            table[assignmentDeadline.TOMORROW].appendChild(row)
         }
         else if (endDate > tomorrow) {
-            table[2].appendChild(row)
+            table[assignmentDeadline.FUTURE].appendChild(row)
         }
 
     });
