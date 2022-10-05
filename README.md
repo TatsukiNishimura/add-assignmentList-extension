@@ -21,6 +21,8 @@ PC でのみ動作します
 
 - 課題一覧と授業一覧が表示される
   - 表示されなければリロードしてください
+  
+<strong><h2>注意</h2>春学期のみ、秋学期のみなど、通期で行われない授業は今の所表示されません</strong>
 
 # プレビュー
 ![Screenshot from 2022-10-05 02-11-18](https://user-images.githubusercontent.com/74486926/193956836-742ac99f-59ed-4d65-bbc1-df3bc1bf2177.png)
