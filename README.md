@@ -22,9 +22,12 @@ PC でのみ動作します
 - 課題一覧が表示される
   - 表示されなければリロードしてください
 
+# プレビュー
+![Screenshot from 2022-10-05 02-11-18](https://user-images.githubusercontent.com/74486926/193956836-742ac99f-59ed-4d65-bbc1-df3bc1bf2177.png)
 # 使用言語
 
 JavaScript
+
 
 # 動作の中身
 
