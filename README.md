@@ -25,7 +25,7 @@ PC でのみ動作します
 <strong><h2>注意</h2>春学期のみ、秋学期のみなど、通期で行われない授業は今の所表示されません</strong>
 
 # プレビュー
-![Screenshot from 2022-10-05 02-11-18](https://user-images.githubusercontent.com/74486926/193956836-742ac99f-59ed-4d65-bbc1-df3bc1bf2177.png)
+![Screenshot from 2022-10-05 23-46-15](https://user-images.githubusercontent.com/74486926/194099018-cdde5ee7-45e5-44f3-97fd-edd87d405d08.png)
 # 使用言語
 
 JavaScript
