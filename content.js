@@ -112,15 +112,17 @@ function addTable(results, body) {
   const div = document.createElement('div');
   div.setAttribute('class', 'module-section');
   let table = [];
+  const header = getHeader();
   const labels = ['今日', '明日', '将来', '期限切れ'];
   for (let i = 0; i < 4; i++) {
     table[i] = document.createElement('table');
     table[i].setAttribute('border', 2);
     table[i].setAttribute('style', 'table-layout: fixed;width: 60%;');
+    if (i == assignmentDeadline.TODAY) {
+      table[assignmentDeadline.TODAY].appendChild(header);
+    }
     table[i].appendChild(getDateLabel(labels[i]));
   }
-  const header = getHeader();
-  table[assignmentDeadline.TODAY].appendChild(header);
 
   results.forEach((element) => {
     const endDate = new Date(element['endDate']);
