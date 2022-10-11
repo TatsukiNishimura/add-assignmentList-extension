@@ -11,6 +11,15 @@ Google Chrome version 106.0.5249.91
 PC でのみ動作します
 
 # 使い方
+- "Code"をクリック
+
+![Screenshot from 2022-10-11 23-50-30](https://user-images.githubusercontent.com/74486926/195125003-83108b22-9f93-4b38-beab-a6005e50ecbf.png)
+
+- "Download ZIP"をクリックするとZIPファイルがダウンロードされる
+
+![Screenshot from 2022-10-11 23-50-40](https://user-images.githubusercontent.com/74486926/195125280-60f75641-b8f9-4eb1-a29a-ca8b9ddb452c.png)
+
+- ダウンロードしたZIPファイルを適当なところで展開
 
 - https://reviews.f-tools.net/Add-On/Jisaku-Tuika.html
   を参考にインストール
