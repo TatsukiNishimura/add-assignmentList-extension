@@ -47,7 +47,7 @@ async function makeClassList(target) {
       // 先頭の年号が2022かどうか
       if (headerOfClassId == yearOfClassId) {
         // classIdの末尾がAかBか
-        if (classId.slice(-1) == semester.LATE) {
+        if (classId.slice(-1) == semester.EARLY) {
           classList.push({ name: className, id: data['id'] });
         }
       }
