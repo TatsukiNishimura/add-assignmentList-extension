@@ -20,7 +20,7 @@ export const assignmentDeadline = {
 
 export const jsInitCheckMilliSecond = 2000;
 
-export const yearOfClassId = '202';
+export const yearOfClassId = '2024';
 // Aなら前期、Bなら後期
 export const semester = {
   EARLY: 'A',
