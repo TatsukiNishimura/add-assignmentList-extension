@@ -39,7 +39,7 @@ async function makeClassList(target) {
   results.forEach((data) => {
     const name = data['name'];
     // 2022-xxxxxxxxxx-Aか2022-xxxxxxxxx-Bなど、講義名の先頭の文字列を読み取る
-    const classId = name.substr(0, name.indexOf(':'));
+    const classId = name.substr(0, name.indexOf(':')).replace(/\s+/g, '');;
     const className = name.substr(name.indexOf(':') + 1);
     // classidの先頭の年号を読み取る
     const headerOfClassId = classId.substr(0, classId.indexOf('-'));
